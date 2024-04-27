@@ -1,0 +1,4 @@
+//For part 3 => Neither Partitioning nor bucketing
+
+select n.subject, n.object, l.object from (select subject, object from yago where predicate ="<hasGivenName>") as n JOIN 
+(select subject, object from yago where predicate="<livesIn>") as l ON(l.subject = n.subject);

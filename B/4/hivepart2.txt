@@ -1,0 +1,198 @@
+//Partitioning but not bucketing
+
+CREATE EXTERNAL TABLE  yago(
+subject STRING,
+predicate STRING,
+object STRING)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ' ';
+
+LOAD DATA LOCAL INPATH '\home\cloudera\Downloads\yago_full_clean.tsv' INTO TABLE yago;
+
+CREATE TABLE yago_part_noBuck(
+    subject STRING,
+    object STRING
+)
+PARTITIONED BY (predicate STRING)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ' '
+STORED AS TEXTFILE;
+
+SET hive.exec.dynamic.partition = true;
+SET hive.exec.dynamic.partition.mode = nonstrict; 
+
+INSERT INTO TABLE yago_part_noBuck PARTITION (predicate)
+SELECT subject, object, predicate AS predicate
+FROM (
+    SELECT subject, object, "<actedIn>" AS predicate
+    FROM yago
+    WHERE predicate = "<actedIn>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<hasAcademicAdvisor>" AS predicate
+    FROM yago
+    WHERE predicate = "<hasAcademicAdvisor>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<hasChild>" AS predicate
+    FROM yago
+    WHERE predicate = "<hasChild>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<hasFamilyName>" AS predicate
+    FROM yago
+    WHERE predicate = "<hasFamilyName>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<hasWebsite>" AS predicate
+    FROM yago
+    WHERE predicate = "<hasWebsite>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<hasWonPrize>" AS predicate
+    FROM yago
+    WHERE predicate = "<hasWonPrize>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<isInterestedIn>" AS predicate
+    FROM yago
+    WHERE predicate = "<isInterestedIn>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<isKnownFor>" AS predicate
+    FROM yago
+    WHERE predicate = "<isKnownFor>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<directed>" AS predicate
+    FROM yago
+    WHERE predicate = "<directed>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<edited>" AS predicate
+    FROM yago
+    WHERE predicate = "<edited>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<graduatedFrom>" AS predicate
+    FROM yago
+    WHERE predicate = "<graduatedFrom>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<hasGender>" AS predicate
+    FROM yago
+    WHERE predicate = "<hasGender>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<hasMusicalRole>" AS predicate
+    FROM yago
+    WHERE predicate = "<hasMusicalRole>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<isCitizenOf>" AS predicate
+    FROM yago
+    WHERE predicate = "<isCitizenOf>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<isMarriedTo>" AS predicate
+    FROM yago
+    WHERE predicate = "<isMarriedTo>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<isPoliticianOf>" AS predicate
+    FROM yago
+    WHERE predicate = "<isPoliticianOf>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<playsFor>" AS predicate
+    FROM yago
+    WHERE predicate = "<playsFor>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<worksAt>" AS predicate
+    FROM yago
+    WHERE predicate = "<worksAt>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<wroteMusicFor>" AS predicate
+    FROM yago
+    WHERE predicate = "<wroteMusicFor>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<created>" AS predicate
+    FROM yago
+    WHERE predicate = "<created>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<diedIn>" AS predicate
+    FROM yago
+    WHERE predicate = "<diedIn>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<hasGivenName>" AS predicate
+    FROM yago
+    WHERE predicate = "<hasGivenName>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<influences>" AS predicate
+    FROM yago
+    WHERE predicate = "<influences>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<isAffiliatedTo>" AS predicate
+    FROM yago
+    WHERE predicate = "<isAffiliatedTo>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<isLeaderOf>" AS predicate
+    FROM yago
+    WHERE predicate = "<isLeaderOf>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<livesIn>" AS predicate
+    FROM yago
+    WHERE predicate = "<livesIn>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<owns>" AS predicate
+    FROM yago
+    WHERE predicate = "<owns>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<participatedIn>" AS predicate
+    FROM yago
+    WHERE predicate = "<participatedIn>"
+    
+    UNION ALL
+    
+    SELECT subject, object, "<wasBornIn>" AS predicate
+    FROM yago
+    WHERE predicate = "<wasBornIn>"
+) AS combined_data;
