@@ -226,3 +226,6 @@ FROM (
     WHERE predicate = "<wasBornIn>"
     DISTRIBUTE BY object
 ) AS combined_data;
+
+SELECT n.subject, n.object, l.object from (SELECT subject, object FROM yago_part_buck WHERE predicate ="<hasGivenName>") as n JOIN 
+(SELECT subject, object FROM yago_part_buck WHERE predicate="<livesIn>") as l ON(l.subject = n.subject);
