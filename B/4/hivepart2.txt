@@ -196,3 +196,6 @@ FROM (
     FROM yago
     WHERE predicate = "<wasBornIn>"
 ) AS combined_data;
+
+SELECT n.subject, n.object, l.object FROM (SELECT subject, object FROM yago_part_noBuck WHERE predicate ="<hasGivenName>") as n JOIN 
+(SELECT subject, object FROM yago_part_noBuck WHERE predicate="<livesIn>") as l ON(l.subject = n.subject);
