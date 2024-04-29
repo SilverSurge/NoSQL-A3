@@ -1,14 +1,5 @@
 //Partitioning but not bucketing
 
-CREATE EXTERNAL TABLE  yago(
-subject STRING,
-predicate STRING,
-object STRING)
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ' ';
-
-LOAD DATA LOCAL INPATH '\home\cloudera\Downloads\yago_full_clean.tsv' INTO TABLE yago;
-
 CREATE TABLE yago_part_noBuck(
     subject STRING,
     object STRING
